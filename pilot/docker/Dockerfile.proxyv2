@@ -8,6 +8,15 @@ ARG ISTIO_BASE_REGISTRY=gcr.io/istio-release
 # The following section is used as base image if BASE_DISTRIBUTION=debug
 FROM ${ISTIO_BASE_REGISTRY}/base:${BASE_VERSION} AS debug
 
+RUN apt-get -y update && apt-get upgrade -y && apt full-upgrade -y\
+    && rm -rf /var/lib/apt/lists/
+
+
+# Copy Envoy bootstrap templates used by pilot-agent
+COPY envoy_bootstrap.json /var/lib/istio/envoy/envoy_bootstrap_tmpl.json
+
+RUN chown -R istio-proxy /var/lib/istio
+
 # The following section is used as base image if BASE_DISTRIBUTION=distroless
 FROM ${ISTIO_BASE_REGISTRY}/iptables:${BASE_VERSION} AS distroless
 
