@@ -53,7 +53,7 @@ pipeline {
       steps {
         script {
           sh "echo TAG=${env.TAG} DISTROLESS_TAG=${env.DISTROLESS_TAG} VARIANT_DISTRO_TAG=${env.VARIANT_DISTRO_TAG} VARIANT_DISTROLESS_TAG=${env.VARIANT_DISTROLESS_TAG}"
-          ["istio/pilot", "istio/operator", "istio/proxyv2"].each { name ->
+          ["istio/pilot", "istio/proxyv2"].each { name ->
             // Rebuild images to add LABEL layers on top
             sh "echo 'FROM ${name}:${env.TAG}' | docker build ${getDockerBuildArgs(name: name, version: env.TAG, mountNetRC: false)} -t '${name}:${env.VARIANT_DISTRO_TAG}' -"
             sh "echo 'FROM ${name}:${env.DISTROLESS_TAG}' | docker build ${getDockerBuildArgs(name: name, version: env.DISTROLESS_TAG, mountNetRC: false)} -t '${name}:${env.VARIANT_DISTROLESS_TAG}' -"
@@ -76,10 +76,8 @@ pipeline {
           sh "echo TAG=${env.TAG} DISTROLESS_TAG=${env.DISTROLESS_TAG} VARIANT_DISTRO_TAG=${env.VARIANT_DISTRO_TAG} VARIANT_DISTROLESS_TAG=${env.VARIANT_DISTROLESS_TAG}"
 
           publishCsmDockerImage(image: "istio/pilot", tag: env.VARIANT_DISTRO_TAG, isStable: env.IS_STABLE, snykTargetFile: "pilot/docker/Dockerfile.pilot")
-          publishCsmDockerImage(image: "istio/operator", tag: env.VARIANT_DISTRO_TAG, isStable: env.IS_STABLE, snykTargetFile: "operator/docker/Dockerfile.operator")
           publishCsmDockerImage(image: "istio/proxyv2", tag: env.VARIANT_DISTRO_TAG, isStable: env.IS_STABLE, snykTargetFile: "pilot/docker/Dockerfile.proxyv2")
           publishCsmDockerImage(image: "istio/pilot", tag: env.VARIANT_DISTROLESS_TAG, isStable: env.IS_STABLE, snykTargetFile: "pilot/docker/Dockerfile.pilot")
-          publishCsmDockerImage(image: "istio/operator", tag: env.VARIANT_DISTROLESS_TAG, isStable: env.IS_STABLE, snykTargetFile: "operator/docker/Dockerfile.operator")
           publishCsmDockerImage(image: "istio/proxyv2", tag: env.VARIANT_DISTROLESS_TAG, isStable: env.IS_STABLE, snykTargetFile: "pilot/docker/Dockerfile.proxyv2")
         }
       }
