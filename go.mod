@@ -57,7 +57,7 @@ require (
 	github.com/prometheus/common v0.62.0
 	github.com/prometheus/procfs v0.15.1
 	github.com/prometheus/prometheus v0.302.1
-	github.com/quic-go/quic-go v0.50.0
+	github.com/quic-go/quic-go v0.50.1
 	github.com/ryanuber/go-glob v1.0.0
 	github.com/spf13/cobra v1.9.1
 	github.com/spf13/pflag v1.0.6
